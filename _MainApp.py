@@ -106,7 +106,7 @@ class MainApp:
         self.new_button.grid(row=0, column=2, padx=(48, 0), pady=(30, 0), sticky='nw')
 
         # edit entry button
-        self.new_button = ttk.Button(self.bottom_frame, text='Edit', width=8,
+        self.new_button = ttk.Button(self.bottom_frame, text='Open', width=8,
                                      style='TButton', command=list_box_open)
         self.new_button.grid(row=0, column=2, padx=(48, 0), pady=(90, 0), sticky='nw')
 

@@ -41,6 +41,7 @@ class VaultInit(Toplevel):
         Label(self.bottom_frame, text='*Master Password:', font='Courier 8', bg='#f0eb4b')\
             .grid(column=0, row=0, padx=12, pady=(6, 0), sticky='w')
         self.master_key = Entry(self.bottom_frame, font='Courier 10', width=24, show='✱')
+        self.master_key.focus_force()
         self.master_key.grid(column=0, row=0, padx=12, pady=(36, 0), sticky='w')
 
         Label(self.bottom_frame, text='*Master PIN:', font='Courier 8', bg='#f0eb4b')\
@@ -59,7 +60,7 @@ class VaultInit(Toplevel):
             plaintext = plaintext.rstrip(b"\0").decode('utf-8')
             return plaintext
 
-        def _login():
+        def _login(_event=None):
             master_key = self.master_key.get()
             master_pin = self.master_pin.get()
 
@@ -83,6 +84,8 @@ class VaultInit(Toplevel):
         self.confirm_button = ttk.Button(self.bottom_frame, text='Confirm', width=8, command=_login)
         self.confirm_button.grid(column=0, row=3, columnspan=2, pady=(30, 12), padx=(0, 72), sticky='e')
 
+        self.lift()
+        self.bind('<Return>', _login)
         self.wait_window()
 
 

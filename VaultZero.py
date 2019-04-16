@@ -78,41 +78,44 @@ class VaultInit(Toplevel):
         self.cancel_button = ttk.Button(self.bottom_frame, text='Quit', width=8, command=self.destroy)
         self.cancel_button.grid(column=0, row=3, pady=(54, 12), padx=(90, 0), sticky='w')
 
-        def _create_key():
+        def _create_key(_event=None):
             pass_1 = self.master_entry.get()
             pass_2 = self.second_entry.get()
             pin = self.master_pin.get()
+
             try:
-                _ = int(pin)  # TODO fix ugly check int, try:/Raise method for all
-            except ValueError:
-                messagebox.showwarning('PIN Error', 'PIN must be number values only!', icon='warning')
-                self.lift()
-            else:
-                if pass_1 != pass_2:
-                    messagebox.showwarning('Key Mismatch', 'Passwords do not Match!', icon='warning')
-                    self.lift()
-                elif len(pin) < 4:
-                    messagebox.showwarning('PIN Error', 'PIN must be at least 4 numbers long!', icon='warning')
-                    self.lift()
+                if not all([pass_1, pass_2, pin]):
+                    raise ValueError('All Fields must be filled!')
+                elif not pass_1 == pass_2:
+                    raise ValueError('Passwords do not Match!')
                 elif len(pass_1) < 8:
-                    messagebox.showwarning('Key Length', 'Password must be at least 8 characters long!', icon='warning')
-                    self.lift()
+                    raise ValueError('Password must be at least 8 characters long!')
+                elif not pin.isdigit():
+                    raise ValueError('PIN must be digits only!')
+                elif len(pin) < 4:
+                    raise ValueError('PIN must be at least 4 numbers long!')
+
+            except ValueError as error:
+                messagebox.showwarning('Error', *error.args, icon='warning')
+                self.lift()
+
+            else:
+                skeleton_key = KeyInit(pass_1, str(pin))
+                self.skeleton_key = (skeleton_key.user_key, skeleton_key.user_pin)
+                key_dump = (skeleton_key.master_key, skeleton_key.master_pin)
+                try:
+                    with open('CryptoKey.dat', 'wb') as key_file:
+                        pickle.dump(key_dump, key_file)
+                except OSError as os_error:
+                    messagebox.showwarning('Error', f'Cannot write to file!\n{os_error.args}', icon='warning')
                 else:
-                    skeleton_key = KeyInit(pass_1, str(pin))
-                    self.skeleton_key = (skeleton_key.user_key, skeleton_key.user_pin)
-                    key_dump = (skeleton_key.master_key, skeleton_key.master_pin)
-                    try:
-                        with open('CryptoKey.dat', 'wb') as key_file:
-                            pickle.dump(key_dump, key_file)
-                    except OSError:
-                        messagebox.showwarning('Error', 'Cannot write to file!\nCheck Permissions', icon='warning')
-                    else:
-                        messagebox.showinfo('Crypto Vault V2', 'Successfully Created and Encrypted!')
-                        self.destroy()
+                    messagebox.showinfo('Crypto Vault V2', 'Successfully Created and Encrypted!')
+                    self.destroy()
 
         self.create_button = ttk.Button(self.bottom_frame, text='Create', width=8, command=_create_key)
         self.create_button.grid(column=0, row=3, pady=(54, 12), padx=(12, 0), sticky='w')
 
+        self.bind('<Return>', _create_key)
         self.wait_window()
 
 
