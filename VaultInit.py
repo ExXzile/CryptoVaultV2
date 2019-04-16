@@ -14,6 +14,7 @@ class VaultInit(Toplevel):
         self.title('Log In')
         self.resizable(False, False)
         self.geometry('+540+360')
+        self.iconbitmap('Icons\\V2.ico')
         self.attributes('-topmost', True)
 
         self.skeleton_key = tuple()

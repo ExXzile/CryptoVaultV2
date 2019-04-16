@@ -32,6 +32,9 @@ class VaultInit(Toplevel):
         self.title('Zero Run')
         self.resizable(False, False)
         self.geometry('+720+360')
+        self.iconbitmap('Icons\\V2.ico')
+
+        self.skeleton_key = tuple()
 
         # ttk style config
         self.ttk_style = ttk.Style()
@@ -96,6 +99,7 @@ class VaultInit(Toplevel):
                     self.lift()
                 else:
                     skeleton_key = KeyInit(pass_1, str(pin))
+                    self.skeleton_key = (skeleton_key.user_key, skeleton_key.user_pin)
                     key_dump = (skeleton_key.master_key, skeleton_key.master_pin)
                     try:
                         with open('CryptoKey.dat', 'wb') as key_file:
@@ -109,8 +113,12 @@ class VaultInit(Toplevel):
         self.create_button = ttk.Button(self.bottom_frame, text='Create', width=8, command=_create_key)
         self.create_button.grid(column=0, row=3, pady=(54, 12), padx=(12, 0), sticky='w')
 
+        self.wait_window()
+
 
 # First run, if CryptoKey.dat wasn't found
 # Store user-created tuple(master_key, master_PIN) encrypted with itself
 def run_zero():
     _v_one = VaultInit()
+    if _v_one.skeleton_key:
+        return _v_one.skeleton_key

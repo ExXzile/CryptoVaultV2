@@ -151,13 +151,21 @@ class MainApp:
             if not messagebox.askokcancel('First Run', 'User Master Key not Found\nCreate new?'):
                 sys.exit()
             else:
-                run_zero()
+                sq_cur.execute('CREATE TABLE IF NOT EXISTS "entries"'
+                               ' ("_id" INTEGER PRIMARY KEY,'
+                               ' "master" TEXT,'
+                               ' "login" BLOB,'
+                               ' "password" BLOB,'
+                               ' "notes" BLOB)')
+                self.skeleton_key = run_zero()  # Create Password and Pin, VaultZero.py
+
         else:
             self.skeleton_key = vault_init()  # Check Password, VaultInit.py
-            if not self.skeleton_key:
-                sys.exit()
-            else:
-                listbox_data()
+
+        if not self.skeleton_key:
+            sys.exit()
+        else:
+            listbox_data()
 
 
 def main():
@@ -165,6 +173,7 @@ def main():
     root.title('CryptoVault v2')
     root.geometry('+480+200')
     root.resizable(False, False)
+    root.iconbitmap('Icons\\V2.ico')
     root.lift()
     _main_app = MainApp(root)
     root.mainloop()

@@ -19,6 +19,7 @@ class FindEntry(Toplevel):
         self.title('Find Entry')
         self.resizable(False, False)
         self.geometry('+560+320')
+        self.iconbitmap('Icons\\V2.ico')
 
         # ttk style config
         self.ttk_style = ttk.Style()

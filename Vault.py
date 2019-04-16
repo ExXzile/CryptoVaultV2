@@ -39,6 +39,7 @@ class VaultEntry(Toplevel):
         self.title('Vault Entry')
         self.resizable(False, False)
         self.geometry('+720+360')
+        self.iconbitmap('Icons\\V2.ico')
 
         self.skeleton_key = skeleton_key
         self.action = action
