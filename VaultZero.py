@@ -75,7 +75,7 @@ class VaultInit(Toplevel):
         self.master_pin.grid(column=0, row=2, padx=12, pady=(36, 0), sticky='w')
 
         # buttons and store key and pin function
-        self.cancel_button = ttk.Button(self.bottom_frame, text='Quit', width=8, command=sys.exit)
+        self.cancel_button = ttk.Button(self.bottom_frame, text='Quit', width=8, command=self.destroy)
         self.cancel_button.grid(column=0, row=3, pady=(54, 12), padx=(90, 0), sticky='w')
 
         def _create_key():
