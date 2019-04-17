@@ -62,6 +62,7 @@ class VaultInit(Toplevel):
         Label(self.bottom_frame, text='*Master Password:', font='Courier 8', bg='#d7d240')\
             .grid(column=0, row=0, padx=12, pady=(6, 0), sticky='w')
         self.master_entry = Entry(self.bottom_frame, font='Courier 8')
+        self.master_entry.focus_force()
         self.master_entry.grid(column=0, row=0, padx=12, pady=(36, 0), sticky='w')
 
         Label(self.bottom_frame, text='*Confirm Password:', font='Courier 8', bg='#d7d240')\

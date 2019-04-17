@@ -95,9 +95,13 @@ class VaultEntry(Toplevel):
         if self.action == 'open':
             entry_data = sq_cur.execute(f'SELECT * FROM "entries" WHERE _id={self._id}').fetchone()
             self.master_entry.insert(0, entry_data[1])
+            self.master_entry.configure(state='disabled')
             self.login_entry.insert(0, decrypt(entry_data[2], self.key_hash))
+            self.login_entry.configure(state='disabled')
             self.password_entry.insert(0, decrypt(entry_data[3], self.key_hash))
+            self.password_entry.configure(state='disabled')
             self.notes_entry.insert(END, decrypt(entry_data[4], self.key_hash))
+            self.notes_entry.configure(state='disabled')
 
         # strong random password generator func and button
         def _generator():
@@ -126,11 +130,15 @@ class VaultEntry(Toplevel):
         self.bottom_logo_canvas.create_image(0, 0, ancho='nw', image=self.bottom_logo)
         self.bottom_logo_canvas.grid(row=0, column=1, rowspan=5, padx=(64, 0), pady=(3, 3), sticky='e')
 
-        # cancel/destroy button
-        self.cancel_button = ttk.Button(self.bottom_frame, text='Cancel', width=10, command=self.destroy)
+        # cancel/close button
+        close_button_text = 'Cancel'
+        if self.action == 'open':
+            close_button_text = 'Close'
+
+        self.cancel_button = ttk.Button(self.bottom_frame, text=close_button_text, width=10, command=self.destroy)
         self.cancel_button.grid(column=0, row=5, columnspan=2, pady=(24, 12), padx=(0, 12), sticky='e')
 
-        # save entry function and button
+        # save entry function and button, replaced with unlock button for existing entries
         def _vault_it():
             master = self.master_entry.get()
             login = self.login_entry.get()
@@ -169,14 +177,27 @@ class VaultEntry(Toplevel):
                         messagebox.showinfo('Success', 'Vault Entry Successfully Encrypted!')
                         self.destroy()
 
+        def _unlock_it():
+            self.master_entry.configure(state='normal')
+            self.login_entry.configure(state='normal')
+            self.password_entry.configure(state='normal')
+            self.notes_entry.configure(state='normal')
+            self.unlock_button.grid_forget()
+            self.save_button = ttk.Button(self.bottom_frame, text='reVault it', width=12, command=_vault_it)
+            self.save_button.grid(column=0, row=5, columnspan=2, pady=(24, 12), padx=(0, 99), sticky='e')
+
         # save button
-        self.save_button = ttk.Button(self.bottom_frame, text='Vault it', width=10, command=_vault_it)
-        self.save_button.grid(column=0, row=5, columnspan=2, pady=(24, 12), padx=(0, 96), sticky='e')
+        if self.action == 'new':
+            self.save_button = ttk.Button(self.bottom_frame, text='Vault it', width=10, command=_vault_it)
+            self.save_button.grid(column=0, row=5, columnspan=2, pady=(24, 12), padx=(0, 96), sticky='e')
+        elif self.action == 'open':
+            self.unlock_button = ttk.Button(self.bottom_frame, text='Unlock', width=10, command=_unlock_it)
+            self.unlock_button.grid(column=0, row=5, columnspan=2, pady=(24, 12), padx=(12, 0), sticky='w')
 
         # self close
         if self.action == 'open':
             Label(self.bottom_frame, text='*Warning! this window will close itself in 3 minutes!',
-                  font='Verdana 7', bg='#f0eb4b', fg='darkred')\
+                  font=('Verdana', 7, 'italic'), bg='#f0eb4b', fg='darkred')\
                 .grid(column=0, row=5, columnspan=2, pady=(0, 33), padx=(0, 12), sticky='e')
             self.after(180000, self.destroy)
 
