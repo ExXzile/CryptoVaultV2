@@ -1,9 +1,11 @@
 
 Crypto Vault V2
-Python 3.72 and Sqlite3
+Python v3.72 and Sqlite3
 
 Encryption algorythms:
-PyCrypto, AES256, salted Hash, Random IV
+PyCrypto, Pycryptodome, AES256, salted Hash, Random IV
+
+PyInstaller 3.4 compilation
 
 Open source:
 https://github.com/ExXzile/CryptoVaultV2
