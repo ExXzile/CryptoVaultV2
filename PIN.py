@@ -17,7 +17,7 @@ class PIN(Toplevel):
 
         # ttk style config
         self.ttk_style = ttk.Style()
-        self.ttk_style.configure('TButton', font='Courier 8', justify='c', takefocus=False)
+        self.ttk_style.configure('TButton', font='Courier 8', justify='c')
 
         # top canvas
         self.top_canvas = Canvas(self, width=160, height=80, bg='lightgrey')

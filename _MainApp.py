@@ -20,7 +20,7 @@ class MainApp:
 
         # ttk style config
         self.ttk_style = ttk.Style()
-        self.ttk_style.configure('TButton', font='Courier 8', justify='c', takefocus=False)
+        self.ttk_style.configure('TButton', font='Courier 8', justify='c')
 
         # top canvas
         self.top_canvas = Canvas(master, width=420, height=80, bg='lightgrey')
@@ -113,6 +113,7 @@ class MainApp:
         # delete entry func and button
         def del_entry():
             try:
+                # extract _id, needed due to alignment padding in a listbox
                 cur_entry = self.list_box.get(self.list_box.curselection())
                 cur_entry_split = cur_entry.split(' ')
                 cur_entry_id = int()
@@ -137,8 +138,12 @@ class MainApp:
         self.new_button.grid(row=0, column=2, padx=(48, 0), pady=(150, 0), sticky='nw')
 
         # About info button
+        def _about():
+            with open('about.txt') as about_file:
+                about_text = about_file.read()
+                messagebox.showinfo('About', about_text, icon='info')
         self.new_button = ttk.Button(self.bottom_frame, text='About', width=8,
-                                     style='TButton')  # TODO add 'about'
+                                     style='TButton', command=_about)  # TODO add 'about'
         self.new_button.grid(row=0, column=2, padx=48, pady=(0, 60), sticky='s')
 
         # quit button
