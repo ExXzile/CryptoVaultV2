@@ -13,11 +13,13 @@ class KeyInit:
     def __init__(self, user_key: str, user_pin: str):
         self.user_key = user_key
         self.user_pin = user_pin
-        key_hash = hashlib.sha256(user_key.encode('utf-8')).digest()
+        key_hash = hashlib.sha256(user_key.encode("utf-8")).digest()
 
         def encrypt(crypto_string, key):
-            crypto_string = crypto_string.encode('utf-8')
-            crypto_string = crypto_string + b"\0" * (AES.block_size - len(crypto_string) % AES.block_size)
+            crypto_string = crypto_string.encode("utf-8")
+            crypto_string = crypto_string + b"\0" * (
+                AES.block_size - len(crypto_string) % AES.block_size
+            )
             iv = Random.new().read(AES.block_size)
             cipher = AES.new(key, AES.MODE_CBC, iv)
             return iv + cipher.encrypt(crypto_string)
@@ -29,55 +31,66 @@ class KeyInit:
 class VaultInit(Toplevel):
     def __init__(self):
         Toplevel.__init__(self)
-        self.title('Zero Run')
+        self.title("Zero Run")
         self.resizable(False, False)
-        self.geometry('+720+360')
-        self.iconbitmap('Icons\\V2.ico')
+        self.geometry("+720+360")
+        self.iconbitmap("Icons\\V2.ico")
 
         self.skeleton_key = tuple()
 
         # ttk style config
         self.ttk_style = ttk.Style()
-        self.ttk_style.configure('TButton', font='Courier 8', justify='c')
+        self.ttk_style.configure("TButton", font="Courier 8", justify="c")
 
         # top canvas
-        self.top_canvas = Canvas(self, width=320, height=80, bg='lightgrey')
-        self.lock_icon = PhotoImage(file='Icons\\lock.png')
+        self.top_canvas = Canvas(self, width=320, height=80, bg="lightgrey")
+        self.lock_icon = PhotoImage(file="Icons\\lock.png")
         self.top_canvas.create_image(48, 42, image=self.lock_icon)
-        self.text_icon = PhotoImage(file='Icons\\CryptoVault.png')
+        self.text_icon = PhotoImage(file="Icons\\CryptoVault.png")
         self.top_canvas.create_image(204, 42, image=self.text_icon)
-        self.top_canvas.grid(row=0, column=0, sticky='ew')
+        self.top_canvas.grid(row=0, column=0, sticky="ew")
 
         # bottom frame
-        self.bottom_frame = Frame(self, bg='#d7d240')
-        self.bottom_frame.grid(row=1, column=0, sticky='news')
+        self.bottom_frame = Frame(self, bg="#d7d240")
+        self.bottom_frame.grid(row=1, column=0, sticky="news")
 
         # warning logo
-        self.warning_canvas = Canvas(self, width=90, height=224, bg='#d7d240', highlightbackground='darkred')
-        self.warning_image = PhotoImage(file='Icons\\init_warning.png')
-        self.warning_canvas.create_image(0, 0, anchor='nw', image=self.warning_image)
-        self.warning_canvas.grid(row=1, column=0, padx=(0, 30), pady=(12, 12), sticky='e')
+        self.warning_canvas = Canvas(
+            self, width=90, height=224, bg="#d7d240", highlightbackground="darkred"
+        )
+        self.warning_image = PhotoImage(file="Icons\\init_warning.png")
+        self.warning_canvas.create_image(0, 0, anchor="nw", image=self.warning_image)
+        self.warning_canvas.grid(
+            row=1, column=0, padx=(0, 30), pady=(12, 12), sticky="e"
+        )
 
         # entry boxes
-        Label(self.bottom_frame, text='*Master Password:', font='Courier 8', bg='#d7d240')\
-            .grid(column=0, row=0, padx=12, pady=(6, 0), sticky='w')
-        self.master_entry = Entry(self.bottom_frame, font='Courier 8')
+        Label(
+            self.bottom_frame, text="*Master Password:", font="Courier 8", bg="#d7d240"
+        ).grid(column=0, row=0, padx=12, pady=(6, 0), sticky="w")
+        self.master_entry = Entry(self.bottom_frame, font="Courier 8")
         self.master_entry.focus_force()
-        self.master_entry.grid(column=0, row=0, padx=12, pady=(36, 0), sticky='w')
+        self.master_entry.grid(column=0, row=0, padx=12, pady=(36, 0), sticky="w")
 
-        Label(self.bottom_frame, text='*Confirm Password:', font='Courier 8', bg='#d7d240')\
-            .grid(column=0, row=1, padx=12, pady=(6, 0), sticky='w')
-        self.second_entry = Entry(self.bottom_frame, font='Courier 8')
-        self.second_entry.grid(column=0, row=1, padx=12, pady=(36, 0), sticky='w')
+        Label(
+            self.bottom_frame, text="*Confirm Password:", font="Courier 8", bg="#d7d240"
+        ).grid(column=0, row=1, padx=12, pady=(6, 0), sticky="w")
+        self.second_entry = Entry(self.bottom_frame, font="Courier 8")
+        self.second_entry.grid(column=0, row=1, padx=12, pady=(36, 0), sticky="w")
 
-        Label(self.bottom_frame, text='*Master PIN:', font='Courier 8', bg='#d7d240')\
-            .grid(column=0, row=2, padx=12, pady=(6, 0), sticky='w')
-        self.master_pin = Entry(self.bottom_frame, font='Courier 8')
-        self.master_pin.grid(column=0, row=2, padx=12, pady=(36, 0), sticky='w')
+        Label(
+            self.bottom_frame, text="*Master PIN:", font="Courier 8", bg="#d7d240"
+        ).grid(column=0, row=2, padx=12, pady=(6, 0), sticky="w")
+        self.master_pin = Entry(self.bottom_frame, font="Courier 8")
+        self.master_pin.grid(column=0, row=2, padx=12, pady=(36, 0), sticky="w")
 
         # buttons and store key and pin function
-        self.cancel_button = ttk.Button(self.bottom_frame, text='Quit', width=8, command=self.destroy)
-        self.cancel_button.grid(column=0, row=3, pady=(54, 12), padx=(90, 0), sticky='w')
+        self.cancel_button = ttk.Button(
+            self.bottom_frame, text="Quit", width=8, command=self.destroy
+        )
+        self.cancel_button.grid(
+            column=0, row=3, pady=(54, 12), padx=(90, 0), sticky="w"
+        )
 
         def _create_key(_event=None):
             pass_1 = self.master_entry.get()
@@ -86,18 +99,18 @@ class VaultInit(Toplevel):
 
             try:
                 if not all([pass_1, pass_2, pin]):
-                    raise ValueError('All Fields must be filled!')
+                    raise ValueError("All Fields must be filled!")
                 elif not pass_1 == pass_2:
-                    raise ValueError('Passwords do not Match!')
+                    raise ValueError("Passwords do not Match!")
                 elif len(pass_1) < 8:
-                    raise ValueError('Password must be at least 8 characters long!')
+                    raise ValueError("Password must be at least 8 characters long!")
                 elif not pin.isdigit():
-                    raise ValueError('PIN must be digits only!')
+                    raise ValueError("PIN must be digits only!")
                 elif len(pin) < 4:
-                    raise ValueError('PIN must be at least 4 numbers long!')
+                    raise ValueError("PIN must be at least 4 numbers long!")
 
             except ValueError as error:
-                messagebox.showwarning('Error', *error.args, icon='warning')
+                messagebox.showwarning("Error", *error.args, icon="warning")
                 self.lift()
 
             else:
@@ -105,18 +118,28 @@ class VaultInit(Toplevel):
                 self.skeleton_key = (skeleton_key.user_key, skeleton_key.user_pin)
                 key_dump = (skeleton_key.master_key, skeleton_key.master_pin)
                 try:
-                    with open('CryptoKey.dat', 'wb') as key_file:
+                    with open("CryptoKey.dat", "wb") as key_file:
                         pickle.dump(key_dump, key_file)
                 except OSError as os_error:
-                    messagebox.showwarning('Error', f'Cannot write to file!\n{os_error.args}', icon='warning')
+                    messagebox.showwarning(
+                        "Error",
+                        f"Cannot write to file!\n{os_error.args}",
+                        icon="warning",
+                    )
                 else:
-                    messagebox.showinfo('Crypto Vault V2', 'Successfully Created and Encrypted!')
+                    messagebox.showinfo(
+                        "Crypto Vault V2", "Successfully Created and Encrypted!"
+                    )
                     self.destroy()
 
-        self.create_button = ttk.Button(self.bottom_frame, text='Create', width=8, command=_create_key)
-        self.create_button.grid(column=0, row=3, pady=(54, 12), padx=(12, 0), sticky='w')
+        self.create_button = ttk.Button(
+            self.bottom_frame, text="Create", width=8, command=_create_key
+        )
+        self.create_button.grid(
+            column=0, row=3, pady=(54, 12), padx=(12, 0), sticky="w"
+        )
 
-        self.bind('<Return>', _create_key)
+        self.bind("<Return>", _create_key)
         self.wait_window()
 
 
