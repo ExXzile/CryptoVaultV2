@@ -120,11 +120,8 @@ class VaultEntry(Toplevel):
             self.password_entry.insert(0, key_string)
 
         self.generate_pass = ttk.Button(
-            self.bottom_frame,
-            text="Generate\nSecure",
-            width=9,
-            style="TButton",
-            command=_generator,
+            self.bottom_frame, text="Generate\nSecure",
+            width=9, style="TButton", command=_generator
         )
         self.generate_pass.grid(column=0, row=2, padx=(12, 0), pady=(96, 0), sticky="w")
 
@@ -134,22 +131,16 @@ class VaultEntry(Toplevel):
             pyperclip.copy(clip)
 
         self.clip_copy = ttk.Button(
-            self.bottom_frame,
-            text="Copy to\nClipboard",
-            width=9,
-            style="TButton",
-            command=_clip_copy,
+            self.bottom_frame, text="Copy to\nClipboard",
+            width=9, style="TButton", command=_clip_copy,
         )
         self.clip_copy.grid(column=0, row=2, padx=(84, 0), pady=(96, 0), sticky="w")
 
         # logo
         self.bottom_logo = PhotoImage(file="Icons\\CryptoVault_V2.png")
         self.bottom_logo_canvas = Canvas(
-            self.bottom_frame,
-            width=90,
-            height=380,
-            bg="#f0eb4b",
-            highlightbackground="#f0eb4b",
+            self.bottom_frame, width=90, height=380,
+            bg="#f0eb4b", highlightbackground="#f0eb4b",
         )
         self.bottom_logo_canvas.create_image(0, 0, ancho="nw", image=self.bottom_logo)
         self.bottom_logo_canvas.grid(

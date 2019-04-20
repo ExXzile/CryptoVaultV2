@@ -51,14 +51,9 @@ class FindEntry(Toplevel):
                 self.destroy()
 
         self.list_box = Listbox(
-            self.bottom_frame,
-            width=24,
-            height=12,
-            borderwidth=2,
-            relief="groove",
-            bg="#f0eb4b",
-            selectbackground="#f0eb4b",
-            selectforeground="darkred",
+            self.bottom_frame, width=24, height=12,
+            borderwidth=2, relief="groove", bg="#f0eb4b",
+            selectbackground="#f0eb4b", selectforeground="darkred",
         )
         self.list_box.bind("<Double-Button>", list_box_open)
         self.list_box.grid(row=0, column=0, padx=3, sticky="ns")
