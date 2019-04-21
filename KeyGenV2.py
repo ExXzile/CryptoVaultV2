@@ -26,7 +26,7 @@ def _make_soup():
 
 def _extra_soup(var):
     more_soup = ''
-    for n in range(random.randrange(var)):
+    for n in range(random.randrange(var + 1)):
         more_soup += random.choice(soup_pool[random.randrange(3)])
     return more_soup
 
