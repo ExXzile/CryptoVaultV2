@@ -9,7 +9,7 @@ from Crypto import Random
 import hashlib
 
 from PIN import pin_check
-from KeyGenerator import key_gen
+from KeyGenV2 import key_gen
 
 
 sq_con = sqlite3.connect("CvaultDB.sqlite")
