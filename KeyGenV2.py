@@ -33,6 +33,7 @@ def _extra_soup(var):
 
 def key_gen():
     password = _make_soup() + _extra_soup(length_var)
+    password = "".join(random.sample(password, len(password)))
     return password
 
 
