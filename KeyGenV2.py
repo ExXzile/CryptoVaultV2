@@ -1,17 +1,13 @@
 
+
 import string
 import secrets
 import random
 
-LOWER_KEYS = string.ascii_lowercase
-UPPER_KEYS = string.ascii_uppercase
-NUMBERS = "1234567890"
-SPEC_CHARS = r'!"#$%&\'()*+,-./:;<=>?[]^_`|~'
-
-soup_pot = [LOWER_KEYS,
-            UPPER_KEYS,
-            NUMBERS,
-            SPEC_CHARS]
+SOUP_POT = [string.ascii_lowercase,
+            string.ascii_uppercase,
+            string.digits,
+            string.punctuation]
 
 vectors = [2, 3, 3, 4]
 length_var = 4
@@ -23,14 +19,14 @@ def _make_soup():
     soup = ''
     for run, vector in enumerate(vectors):
         for _ in range(vector):
-            soup += secrets.choice(soup_pot[run])
+            soup += secrets.choice(SOUP_POT[run])
     return soup
 
 
 def _extra_soup(var):
     more_soup = ''
     for _ in range(secrets.randbelow(var + 1)):
-        more_soup += secrets.choice(soup_pot[secrets.randbelow(len(vectors))])
+        more_soup += secrets.choice(SOUP_POT[secrets.randbelow(len(vectors))])
     return more_soup
 
 
