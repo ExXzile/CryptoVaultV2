@@ -94,9 +94,9 @@ class VaultEntry(Toplevel):
 
         # if an existing entry, decrypt and populate
         def decrypt(cypher_text, key_hash):
-            iv = cypher_text[: AES.block_size]
+            iv = cypher_text[:AES.block_size]
             cipher = AES.new(key_hash, AES.MODE_CBC, iv)
-            plaintext = cipher.decrypt(cypher_text[AES.block_size :])
+            plaintext = cipher.decrypt(cypher_text[AES.block_size:])
             plaintext = plaintext.rstrip(b"\0").decode("utf-8")
             return plaintext
 
@@ -123,6 +123,8 @@ class VaultEntry(Toplevel):
             self.bottom_frame, text="Generate\nSecure",
             width=9, style="TButton", command=_generator
         )
+        if self.action == "open":
+            self.generate_pass.configure(state='disabled')
         self.generate_pass.grid(column=0, row=2, padx=(12, 0), pady=(96, 0), sticky="w")
 
         # copy to clipboard func and button
@@ -202,9 +204,11 @@ class VaultEntry(Toplevel):
                 if write_confirm:
                     try:
                         sq_cur.execute(query, query_data)
-                    except OSError:
+                    except OSError as os_error:
                         messagebox.showwarning(
-                            "Error", "Cannot Write to File!", icon="warning"
+                            "Error", f"Cannot Write to File!\n"
+                            f"{os_error.args}",
+                            icon="warning"
                         )
                     else:
                         sq_con.commit()
@@ -218,6 +222,7 @@ class VaultEntry(Toplevel):
             self.login_entry.configure(state="normal")
             self.password_entry.configure(state="normal")
             self.notes_entry.configure(state="normal")
+            self.generate_pass.configure(state='normal')
             self.unlock_button.grid_forget()
             self.save_button = ttk.Button(
                 self.bottom_frame, text="reVault it", width=12, command=_vault_it
